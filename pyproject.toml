@@ -1,0 +1,11 @@
+[project]
+name = "reflex-viaje"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.135.2",
+    "reflex>=0.8.28.post1",
+    "uvicorn>=0.42.0",
+]

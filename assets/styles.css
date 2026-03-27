@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap');
+
+:root {
+    /* Fonts Families */
+    --font-heading: 'Playfair Display', serif;      /* Elegant, luxury, high contrast */
+    --font-body: 'Montserrat', sans-serif;          /* Modern, clean, adventurous */
+    --font-accent: 'Cormorant Garamond', serif;     /* Classic, sophisticated serif */
+
+    /* Travel Elegant Palette */
+    --primary-color: #0f3057;    /* Deep Midnight Blue (Ocean/Luxury) */
+    --secondary-color: #bc945c;  /* Antique Gold (Sand/Sun/Elegance) */
+    --accent-color: #00587a;     /* Deep Teal (Coastal vibe) */
+    
+    /* Backgrounds */
+    --bg-main: #f4f6f9;          /* Light Mist (Clean & Modern) */
+    --bg-card: #ffffff;          /* Pure White */
+    --bg-dark: #1b262c;          /* Deep Charcoal (For dark sections) */
+    
+    /* Text */
+    --text-primary: #1b262c;     /* Dark Charcoal */
+    --text-secondary: #5b6e7d;   /* Slate Blue-Grey */
+    --text-light: #ffffff;       /* For contrast on dark backgrounds */
+    
+    /* Semantic Colors */
+    --status-success: #2d5d44;   /* Forest Green (Nature/Safe) */
+    --status-warning: #d98c5f;   /* Terracotta (Earth/Notice) */
+    --status-error: #a30000;     /* Deep Red */
+    
+    /* Accents & Borders */
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.bg-dark {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+}
+
+.bg-light {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}
+
+.nav-footer-style {
+    background-color: var(--primary-color) !important;
+    color: var(--text-light) !important;
+    padding: 1em 2em;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.nav-footer-style * {
+    color: inherit !important;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background-color: var(--bg-main);
+    margin: 0;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--primary-color);
+    margin: 0;
+}
+
+

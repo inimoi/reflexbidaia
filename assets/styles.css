@@ -2,9 +2,9 @@
 
 :root {
     /* Fonts Families */
-    --font-heading: 'Playfair Display', serif;      /* Elegant, luxury, high contrast */
+    --font-heading: 'Montserrat', sans-serif;      /* Elegant, luxury, high contrast */
     --font-body: 'Montserrat', sans-serif;          /* Modern, clean, adventurous */
-    --font-accent: 'Cormorant Garamond', serif;     /* Classic, sophisticated serif */
+    --font-accent: 'Montserrat', sans-serif;     /* Classic, sophisticated serif */
 
     /* Travel Elegant Palette */
     --primary-color: #0f3057;    /* Deep Midnight Blue (Ocean/Luxury) */
@@ -58,7 +58,7 @@
 body {
     font-family: var(--font-body);
     color: var(--text-primary);
-    background-color: var(--bg-main);
+    background-color: var(--bg-light);
     margin: 0;
     overflow-x: hidden;
 }

@@ -20,3 +20,21 @@ index_meta = [
     {"name": "og:description", "content": index_description},
     ]
 index_meta.extend(_meta)
+
+#Login
+login_title = "Login"
+login_description = "Login"
+login_meta = [
+    {"name": "og:title", "content": login_title},
+    {"name": "og:description", "content": login_description},
+    ]
+login_meta.extend(_meta)
+
+#register
+register_title = "Registro"
+register_description = "Registro"
+register_meta = [
+    {"name": "og:title", "content": register_title},
+    {"name": "og:description", "content": register_description},
+    ]
+register_meta.extend(_meta)

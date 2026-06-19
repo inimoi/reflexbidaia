@@ -6,24 +6,27 @@ from ..layouts.layout_base import base_layout
 from ..utils.utils import _meta
 from ..utils.utils import diauno_description, diauno_meta, diauno_title, lang
 from ..navigation.routes import Routes
+from ..layouts.protected.protected_routes import protected_page
+from reflex_viaje.pages.auth.login import LoginState
 
-class State(rx.State):
-    """The app state."""
+
 
 @rx.page(
     route=Routes.DIAUNO.value,
     title=diauno_title,
     description=diauno_description,
     meta=diauno_meta,
+    on_load=LoginState.validate_token_app
 )
 def diauno() -> rx.Component:
     # Welcome Page (diauno)
-    return base_layout(
-        rx.box(
-            rx.image(
-                src="/Plano_dia_1.png",
-                width="100%",
-                height="auto",
+    return protected_page(
+        base_layout(
+            rx.box(
+                rx.image(
+                    src="/Plano_dia_1.png",
+                    width="100%",
+                    height="auto",
                 alt="Plano Día 1",
             ),
             class_name="w-full max-w-4xl mx-auto overflow-hidden",
@@ -62,4 +65,5 @@ def diauno() -> rx.Component:
         ),
         width="100%",
         padding_x="4",
+    ),
     )

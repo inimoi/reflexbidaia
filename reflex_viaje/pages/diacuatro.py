@@ -6,19 +6,20 @@ from ..layouts.layout_base import base_layout
 from ..utils.utils import _meta
 from ..utils.utils import diacuatro_description, diacuatro_meta, diacuatro_title, lang
 from ..navigation.routes import Routes
-
-class State(rx.State):
-    """The app state."""
+from ..layouts.protected.protected_routes import protected_page
+from reflex_viaje.pages.auth.login import LoginState
 
 @rx.page(
     route=Routes.DIACUATRO.value,
     title=diacuatro_title,
     description=diacuatro_description,
     meta=diacuatro_meta,
+    on_load=LoginState.validate_token_app
 )
 def diacuatro() -> rx.Component:
     # Welcome Page (diauno)
-    return base_layout(
+    return protected_page(
+        base_layout(
         rx.box(
             rx.image(
                 src="/Plano_dia_4.png",
@@ -62,4 +63,5 @@ def diacuatro() -> rx.Component:
         ),
         width="100%",
         padding_x="4",
+    ),
     )

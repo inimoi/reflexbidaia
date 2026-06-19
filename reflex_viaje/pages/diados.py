@@ -6,19 +6,20 @@ from ..layouts.layout_base import base_layout
 from ..utils.utils import _meta
 from ..utils.utils import diados_description, diados_meta, diados_title, lang
 from ..navigation.routes import Routes
-
-class State(rx.State):
-    """The app state."""
+from ..layouts.protected.protected_routes import protected_page
+from reflex_viaje.pages.auth.login import LoginState
 
 @rx.page(
     route=Routes.DIADOS.value,
     title=diados_title,
     description=diados_description,
     meta=diados_meta,
+    on_load=LoginState.validate_token_app
 )
 def diados() -> rx.Component:
     # Welcome Page (diauno)
-    return base_layout(
+    return protected_page(
+    base_layout(
         rx.box(
             rx.image(
                 src="/Plano_dia_2.png",
@@ -62,4 +63,5 @@ def diados() -> rx.Component:
         ),
         width="100%",
         padding_x="4",
+    ),
     )

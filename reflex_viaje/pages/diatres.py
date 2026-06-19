@@ -6,24 +6,25 @@ from ..layouts.layout_base import base_layout
 from ..utils.utils import _meta
 from ..utils.utils import diatres_description, diatres_meta, diatres_title, lang
 from ..navigation.routes import Routes
-
-class State(rx.State):
-    """The app state."""
+from ..layouts.protected.protected_routes import protected_page
+from reflex_viaje.pages.auth.login import LoginState
 
 @rx.page(
     route=Routes.DIATRES.value,
     title=diatres_title,
     description=diatres_description,
     meta=diatres_meta,
+    on_load=LoginState.validate_token_app
 )
 def diatres() -> rx.Component:
     # Welcome Page (diauno)
-    return base_layout(
-        rx.box(
-            rx.image(
-                src="/Plano_dia_3.png",
-                width="100%",
-                height="auto",
+    return protected_page(
+        base_layout(
+            rx.box(
+                rx.image(
+                    src="/Plano_dia_3.png",
+                    width="100%",
+                    height="auto",
                 alt="Plano Día 3",
             ),
             class_name="w-full max-w-4xl mx-auto overflow-hidden",
@@ -62,4 +63,5 @@ def diatres() -> rx.Component:
         ),
         width="100%",
         padding_x="4",
-    )
+    ),
+)

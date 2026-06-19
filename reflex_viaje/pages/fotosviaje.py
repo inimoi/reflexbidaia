@@ -10,6 +10,8 @@ from ..utils.utils import (
     fotosviaje_meta,
     lang,
 )
+from ..pages.auth.login import LoginState
+from ..layouts.protected.protected_routes import protected_page
 from ..navigation.routes import Routes
 import httpx
 import os
@@ -157,131 +159,132 @@ def photos_carousel() -> rx.Component:
     title=fotosviaje_title,
     description=fotosviaje_description,
     meta=fotosviaje_meta,
-    on_load=UploadState.load_photos,
+    on_load=[UploadState.load_photos,LoginState.validate_token_app],
 )
 def fotosviaje() -> rx.Component:
     # Welcome Page (Index)
-    return base_layout(
-        rx.box(
-            rx.vstack(
-                rx.hstack(
-                    rx.heading("Sube tus Fotos", size="8", margin_bottom="2rem", style={"color": "white"}),
-                    rx.upload(
+    return protected_page(   
+        base_layout(
+            rx.box(
+                rx.vstack(
+                    rx.hstack(
+                        rx.heading("Sube tus Fotos", size="8", margin_bottom="2rem", style={"color": "white"}),
+                        rx.upload(
+                            rx.vstack(
+                                rx.button(
+                                    "Seleccionar Archivos",
+                                    color_scheme="blue",
+                                    variant="solid",
+                                ),
+                                rx.text(
+                                    "Arrastra los archivos aquí o haz clic para seleccionar",
+                                    color="gray",
+                                ),
+                                rx.text(
+                                    "Admita archivos JPG, PNG, GIF y WEBP",
+                                    color="gray",
+                                ),
+                                align_items="center",
+                                justify_content="center",
+                                padding="2rem",
+                                border="2px dashed",
+                                border_color=rx.color("blue", 5),
+                                border_radius="md",
+                                _hover={"bg": rx.color("blue", 2)},
+                            ),
+                            id="photo_upload",
+                            multiple=True,
+                            accept={
+                                "image/png": [".png"],
+                                "image/jpeg": [".jpg", ".jpeg"],
+                                "image/gif": [".gif"],
+                                "image/webp": [".webp"],
+                            },
+                            max_files=5,
+                            disabled=UploadState.is_uploading,
+                            on_drop=UploadState.handle_upload(
+                                rx.upload_files(upload_id="photo_upload")
+                            ),
+                        ),
+                        rx.cond(
+                            UploadState.is_uploading,
+                            rx.spinner(size="3"),
+                        ),
+                        rx.text(
+                            UploadState.upload_status,
+                            color=rx.cond(
+                                UploadState.upload_status.contains("Error")
+                                | UploadState.upload_status.contains("⚠️"),
+                                rx.color("red", 9),
+                                rx.color("green", 9),
+                            ),
+                            weight="bold",
+                            margin_top="1rem",
+                        ),
+                        align_items="center",
+                        width="100%",
+                        height="30%",
+                        padding_top="2rem",
+                        flex="1",
+                    ),
+                    rx.hstack(
+                        photos_carousel(),
+                        flex="1",
+                        width="100%",
+                    ),
+                    
+                    rx.grid(
                         rx.vstack(
-                            rx.button(
-                                "Seleccionar Archivos",
-                                color_scheme="blue",
-                                variant="solid",
+                            rx.link(
+                                rx.icon("map-pin", size=32, class_name="text-blue-900 mb-2"),
+                                rx.heading(
+                                    "Fotos de los destinos", size="5", class_name="font-bold"
+                                ),
+                                rx.text(
+                                    "Explora los rincones de nuestro viaje",
+                                    class_name="text-slate-600 text-center",
+                                ),
+                                class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
+                                href=Routes.FOTOSDESTINOS.value,
                             ),
-                            rx.text(
-                                "Arrastra los archivos aquí o haz clic para seleccionar",
-                                color="gray",
+                        ),
+                        rx.vstack(
+                            rx.link(
+                                rx.icon("camera", size=32, class_name="text-blue-900 mb-2"),
+                                rx.heading("Fotos del viaje", size="5", class_name="font-bold"),
+                                rx.text(
+                                    "Sube y ve tus momentos favoritos.",
+                                    class_name="text-slate-600 text-center",
+                                ),
+                                class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
+                                href=Routes.FOTOSVIAJE.value,
                             ),
-                            rx.text(
-                                "Admita archivos JPG, PNG, GIF y WEBP",
-                                color="gray",
+                        ),
+                        rx.vstack(
+                            rx.link(
+                                rx.icon("utensils", size=32, class_name="text-blue-900 mb-2"),
+                                rx.heading(
+                                    "Gastos comunes del viaje", size="5", class_name="font-bold"
+                                ),
+                                rx.text(
+                                    "Visualización de los gastos comunes",
+                                    class_name="text-slate-600 text-center",
+                                ),
+                                class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
+                                href=Routes.GASTOS.value,
                             ),
-                            align_items="center",
-                            justify_content="center",
-                            padding="2rem",
-                            border="2px dashed",
-                            border_color=rx.color("blue", 5),
-                            border_radius="md",
-                            _hover={"bg": rx.color("blue", 2)},
                         ),
-                        id="photo_upload",
-                        multiple=True,
-                        accept={
-                            "image/png": [".png"],
-                            "image/jpeg": [".jpg", ".jpeg"],
-                            "image/gif": [".gif"],
-                            "image/webp": [".webp"],
-                        },
-                        max_files=5,
-                        disabled=UploadState.is_uploading,
-                        on_drop=UploadState.handle_upload(
-                            rx.upload_files(upload_id="photo_upload")
+                        columns="3",
+                        spacing="4",
+                        class_name="w-full mt-8 grid-cols-1 md:grid-cols-3",  
                         ),
-                    ),
-                    rx.cond(
-                        UploadState.is_uploading,
-                        rx.spinner(size="3"),
-                    ),
-                    rx.text(
-                        UploadState.upload_status,
-                        color=rx.cond(
-                            UploadState.upload_status.contains("Error")
-                            | UploadState.upload_status.contains("⚠️"),
-                            rx.color("red", 9),
-                            rx.color("green", 9),
-                        ),
-                        weight="bold",
-                        margin_top="1rem",
-                    ),
-                    align_items="center",
+                    gap="4rem",
                     width="100%",
-                    height="30%",
-                    padding_top="2rem",
-                    flex="1",
+                    
                 ),
-                rx.hstack(
-                    photos_carousel(),
-                    flex="1",
-                    width="100%",
-                ),
-                
-                rx.grid(
-                    rx.vstack(
-                        rx.link(
-                            rx.icon("map-pin", size=32, class_name="text-blue-900 mb-2"),
-                            rx.heading(
-                                "Fotos de los destinos", size="5", class_name="font-bold"
-                            ),
-                            rx.text(
-                                "Explora los rincones de nuestro viaje",
-                                class_name="text-slate-600 text-center",
-                            ),
-                            class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
-                            href=Routes.FOTOSDESTINOS.value,
-                        ),
-                    ),
-                    rx.vstack(
-                        rx.link(
-                            rx.icon("camera", size=32, class_name="text-blue-900 mb-2"),
-                            rx.heading("Fotos del viaje", size="5", class_name="font-bold"),
-                            rx.text(
-                                "Sube y ve tus momentos favoritos.",
-                                class_name="text-slate-600 text-center",
-                            ),
-                            class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
-                            href=Routes.FOTOSVIAJE.value,
-                        ),
-                    ),
-                    rx.vstack(
-                        rx.link(
-                            rx.icon("utensils", size=32, class_name="text-blue-900 mb-2"),
-                            rx.heading(
-                                "Gastos comunes del viaje", size="5", class_name="font-bold"
-                            ),
-                            rx.text(
-                                "Visualización de los gastos comunes",
-                                class_name="text-slate-600 text-center",
-                            ),
-                            class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
-                            href=Routes.GASTOS.value,
-                        ),
-                    ),
-                    columns="3",
-                    spacing="4",
-                    class_name="w-full mt-8 grid-cols-1 md:grid-cols-3",  
-                    ),
-                gap="4rem",
-                width="100%",
-                
             ),
+            width="100%",
+            padding_x="1",
+            padding_y="5rem",
         ),
-        width="100%",
-        padding_x="1",
-        padding_y="5rem",
-    ),
-
+    )

@@ -5,9 +5,10 @@ from ..layouts.layout_base import base_layout
 from ..utils.utils import fotosdestinos_title, fotosdestinos_description, fotosdestinos_meta
 
 from ..navigation.routes import Routes
+from reflex_viaje.pages.auth.login import LoginState
+from ..layouts.protected.protected_routes import protected_page
 
-class State(rx.State):
-    """The app state."""
+class FotosDestinosState(rx.State):    
     images: list[dict[str, str]] = [
         {"url": "/Donostia.jpg", "title": "Donostia-San Sebastián", "desc": "La espectacular playa de La Concha y vistas desde el Monte Igueldo."},
         {"url": "/Biarritz.png", "title": "Biarritz", "desc": "Elegancia imperial, playas de surfistas y el icónico Rocher de la Vierge."},
@@ -52,7 +53,7 @@ def carousel() -> rx.Component:
         rx.box(
             # Image component that binds to State.current_image_url
             rx.image(
-                src=State.current_image_url,
+                src=FotosDestinosState.current_image_url,
                 class_name="w-full h-full object-cover transition-all duration-700 ease-in-out select-none",
             ),
             # Gradient overlay to make the text contrast nicely
@@ -62,13 +63,13 @@ def carousel() -> rx.Component:
             # Text / Caption Overlay (Title + Description)
             rx.vstack(
                 rx.heading(
-                    State.current_image_title,
+                    FotosDestinosState.current_image_title,
                     class_name="text-2xl md:text-4xl font-bold text-white drop-shadow-lg tracking-tight",
                     style={"font_family": "var(--font-heading)", "color": "white"}
                     
                 ),
                 rx.text(
-                    State.current_image_desc,
+                    FotosDestinosState.current_image_desc,
                     class_name="text-white/90 text-sm md:text-base max-w-xl drop-shadow-md font-medium",
                 ),
                 align_items="start",
@@ -78,13 +79,13 @@ def carousel() -> rx.Component:
             # Left Navigation Button
             rx.button(
                 rx.icon("chevron-left", size=24, class_name="text-white"),
-                on_click=State.prev_image,
+                on_click=FotosDestinosState.prev_image,
                 class_name="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-black/30 backdrop-blur-md hover:bg-black/50 border border-white/10 rounded-full transition-all duration-300 hover:scale-110 cursor-pointer shadow-lg active:scale-95"
             ),
             # Right Navigation Button
             rx.button(
                 rx.icon("chevron-right", size=24, class_name="text-white"),
-                on_click=State.next_image,
+                on_click=FotosDestinosState.next_image,
                 class_name="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-black/30 backdrop-blur-md hover:bg-black/50 border border-white/10 rounded-full transition-all duration-300 hover:scale-110 cursor-pointer shadow-lg active:scale-95"
             ),
             # Indicators (dots)
@@ -92,11 +93,11 @@ def carousel() -> rx.Component:
                 *[
                     rx.box(
                         class_name=rx.cond(
-                            State.current_index == i,
+                            FotosDestinosState.current_index == i,
                             "w-8 h-2.5 bg-[#bc945c] rounded-full transition-all duration-300 shadow-[0_0_8px_#bc945c]",
                             "w-2.5 h-2.5 bg-white/40 hover:bg-white/70 rounded-full transition-all duration-300 cursor-pointer"
                         ),
-                        on_click=State.set_index(i)
+                        on_click=FotosDestinosState.set_index(i)
                     )
                     for i in range(12)  # length of State.images list
                 ],
@@ -114,49 +115,52 @@ def carousel() -> rx.Component:
     title=fotosdestinos_title,
     description=fotosdestinos_description,
     meta=fotosdestinos_meta,
+    on_load=LoginState.validate_token_app
 )
 def fotosdestinos() -> rx.Component:
     # Welcome Page (Index)
-    return base_layout(
-        rx.vstack(
-            rx.heading("Destinos del Viaje", class_name="text-3xl md:text-5xl font-extrabold mb-2 mt-4 text-center", style={"color": "white"}),
-            rx.text("Explora los mágicos lugares que visitamos en nuestra aventura.", class_name="text-white text-center max-w-xl mx-auto"),
-            carousel(),
-            align_items="center",
+    return protected_page(
+        base_layout(
+            rx.vstack(
+                rx.heading("Destinos del Viaje", class_name="text-3xl md:text-5xl font-extrabold mb-2 mt-4 text-center", style={"color": "white"}),
+                rx.text("Explora los mágicos lugares que visitamos en nuestra aventura.", class_name="text-white text-center max-w-xl mx-auto"),
+                carousel(),
+                align_items="center",
+                width="100%",
+            ),
+            rx.grid(
+                rx.vstack(
+                    rx.link(
+                        rx.icon("map-pin", size=32, class_name="text-blue-900 mb-2"),
+                        rx.heading("Fotos de los destinos", size="5", class_name="font-bold"),
+                        rx.text("Explora los rincones de nuestro viaje", class_name="text-slate-600 text-center"),
+                        class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
+                        href=Routes.FOTOSDESTINOS.value
+                    ),
+                ),
+                rx.vstack(
+                    rx.link(
+                        rx.icon("camera", size=32, class_name="text-blue-900 mb-2"),
+                        rx.heading("Fotos del viaje", size="5", class_name="font-bold"),
+                        rx.text("Sube y ve tus momentos favoritos.", class_name="text-slate-600 text-center"),
+                        class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
+                        href=Routes.FOTOSVIAJE.value
+                    ),
+                ),
+                rx.vstack(
+                    rx.link(
+                        rx.icon("utensils", size=32, class_name="text-blue-900 mb-2"),
+                        rx.heading("Gastos comunes del viaje", size="5", class_name="font-bold"),
+                        rx.text("Visualización de los gastos comunes", class_name="text-slate-600 text-center"),
+                        class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
+                        href=Routes.GASTOS.value
+                    ),
+                ),
+                columns="3",
+                spacing="4",
+                class_name="w-full mt-8 grid-cols-1 md:grid-cols-3",
+            ),
             width="100%",
+            padding_x="4",
         ),
-        rx.grid(
-            rx.vstack(
-                rx.link(
-                    rx.icon("map-pin", size=32, class_name="text-blue-900 mb-2"),
-                    rx.heading("Fotos de los destinos", size="5", class_name="font-bold"),
-                    rx.text("Explora los rincones de nuestro viaje", class_name="text-slate-600 text-center"),
-                    class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
-                    href=Routes.FOTOSDESTINOS.value
-                ),
-            ),
-            rx.vstack(
-                rx.link(
-                    rx.icon("camera", size=32, class_name="text-blue-900 mb-2"),
-                    rx.heading("Fotos del viaje", size="5", class_name="font-bold"),
-                    rx.text("Sube y ve tus momentos favoritos.", class_name="text-slate-600 text-center"),
-                    class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
-                    href=Routes.FOTOSVIAJE.value
-                ),
-            ),
-            rx.vstack(
-                rx.link(
-                    rx.icon("utensils", size=32, class_name="text-blue-900 mb-2"),
-                    rx.heading("Gastos comunes del viaje", size="5", class_name="font-bold"),
-                    rx.text("Visualización de los gastos comunes", class_name="text-slate-600 text-center"),
-                    class_name="p-8 bg-white rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition-shadow",
-                    href=Routes.GASTOS.value
-                ),
-            ),
-            columns="3",
-            spacing="4",
-            class_name="w-full mt-8 grid-cols-1 md:grid-cols-3",
-        ),
-        width="100%",
-        padding_x="4",
     )

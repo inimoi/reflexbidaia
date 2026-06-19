@@ -25,7 +25,7 @@ def navbar_buttons() -> rx.Component:
                 rx.cond(
                     LoginState.logged_in,
                     rx.hstack(
-                        rx.cond(LoginState.usuario == "inimonizan@gmail.com",
+                        rx.cond(LoginState.usuario == "miranda@tello.es",
                             rx.vstack(
                                 rx.text(f"Hola, {LoginState.usuario}", size="2", color="white"),
                                 rx.image(

@@ -20,7 +20,7 @@ class FotosDestinosState(rx.State):
         {"url": "/Getaria_1.jpg", "title": "Getaria", "desc": "Pueblo pesquero famoso por su 'ratón', el txakoli y Elcano."},
         {"url": "/zumaia_1.jpg", "title": "Zumaia (Flysch)", "desc": "Impresionantes acantilados y formaciones geológicas de millones de años."},
         {"url": "/Hendaye.jpg", "title": "Hendaya", "desc": "Playa kilométrica en la frontera y el impresionante Castillo de Abbadia."},
-        {"url": "/Hecho.png", "title": "Valle de Hecho", "desc": "Naturaleza indómita, bosques y picos majestuosos del Pirineo Aragonés."}
+        {"url": "/siresa.png", "title": "Siresa", "desc": "Naturaleza indómita, bosques y picos majestuosos del Pirineo Aragonés."}
     ]
     
     current_index: int = 0

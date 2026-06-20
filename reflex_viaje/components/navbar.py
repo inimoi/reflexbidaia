@@ -37,7 +37,7 @@ def navbar_buttons() -> rx.Component:
                                 align_items="center",  
                             ),
                         ),
-                        rx.cond(LoginState.usuario == "sancho@sancho.es",
+                        rx.cond(LoginState.usuario == "sancho@barre.es",
                             rx.vstack(
                                 rx.text(f"Hola, {LoginState.usuario}", size="2", color="white"),
                                 rx.image(
@@ -49,7 +49,7 @@ def navbar_buttons() -> rx.Component:
                                 align_items="center",  
                             ),
                         ),
-                        rx.cond(LoginState.usuario == "almela@almela.es",
+                        rx.cond(LoginState.usuario == "almela@machado.es",
                            
                                 rx.vstack(
                                     rx.text(f"Hola, {LoginState.usuario}", size="2", color="white"),

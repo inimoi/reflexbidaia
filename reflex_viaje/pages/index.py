@@ -26,6 +26,7 @@ def index() -> rx.Component:
                     rx.heading(
                         "Viaje a Euskal Herria",
                         class_name="text-4xl md:text-6xl text-red tracking-tighter drop-shadow-2xl mb-2",
+                        style={"color": "white"},
                     ),
                     rx.button(
                         "Ruta día 1, jueves 06/08 ",

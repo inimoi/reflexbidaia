@@ -27,7 +27,7 @@ class UploadState(rx.State):
     current_index: int = 0
 
     async def load_photos(self):
-        backend_url = os.getenv("API_URL", "http://localhost:8000")
+        backend_url = os.getenv("API_URL", "https://api.inimonizango.eu")
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(f"{backend_url}/photos")

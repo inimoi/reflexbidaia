@@ -1,6 +1,7 @@
 import reflex as rx
 
 config = rx.Config(
+    show_built_with_reflex=False,
     app_name="reflex_viaje",
     backend_port=8001,
     cors_allowed_origins=[

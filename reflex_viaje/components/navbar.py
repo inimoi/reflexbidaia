@@ -102,7 +102,7 @@ def navbar_buttons() -> rx.Component:
                         rx.menu.item("Día 5", on_click=NavState.to_diacinco()),
                         rx.menu.separator(),
                         rx.menu.item("Log in", on_click=NavState.to_login()),
-                        rx.menu.item("Sign up", on_click=NavState.to_signup()),
+                        rx.menu.item("Log out", on_click=LoginState.logout),
                     ),
                     justify="end",
                 ),

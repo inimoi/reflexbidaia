@@ -27,10 +27,6 @@ def index() -> rx.Component:
                         "Viaje a Euskal Herria",
                         class_name="text-4xl md:text-6xl text-red tracking-tighter drop-shadow-2xl mb-2",
                     ),
-                    rx.text(
-                        "Descubre la magia del norte. Paisajes infinitos, cultura milenaria y gastronomía única.",
-                        class_name="text-lg md:text-xl text-white/90 max-w-2xl text-center font-medium drop-shadow-lg mb-4",
-                    ),
                     rx.button(
                         "Ruta día 1, jueves 06/08 ",
                         class_name="bg-white text-blue-900 hover:bg-blue-50 px-8 py-4 text-lg font-bold rounded-full transition-all transform hover:scale-105 shadow-xl",

@@ -65,7 +65,7 @@ class UploadState(rx.State):
 
         # URL del backend (FastAPI)
         # En Reflex, por defecto el backend corre en el puerto 8000
-        backend_url = os.getenv("API_URL", "http://localhost:8000")
+        backend_url = os.getenv("API_URL", "https://api.inimonizango.eu")
         upload_endpoint = f"{backend_url}/upload"
 
         async with httpx.AsyncClient() as client:
